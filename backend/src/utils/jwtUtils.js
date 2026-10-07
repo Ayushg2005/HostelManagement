@@ -41,8 +41,8 @@ const getCookieOptions = () => {
   const isProduction = process.env.NODE_ENV === 'production';
   return {
     httpOnly: true, // Prevents XSS script access
-    secure: isProduction, // HTTPS only in production
-    sameSite: isProduction ? 'none' : 'lax', // Must be 'none' for cross-domain cookies (Vercel -> Render)
+    secure: true, // Always true for cross-domain cookies
+    sameSite: 'none', // Always 'none' for Vercel -> Render cross-domain cookies
     maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days in ms
   };
 };
