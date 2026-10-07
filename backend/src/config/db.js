@@ -13,7 +13,13 @@ const connectDB = async () => {
     console.log(`[Database] Connected to MongoDB at ${mongoose.connection.host}`);
   } catch (err) {
     console.warn('[Database] Original Connection Error:', err.message);
-    console.warn('[Database] Could not connect to MongoDB. Starting MongoMemoryServer fallback...');
+    
+    if (process.env.NODE_ENV === 'production') {
+      console.error('[Database] FATAL ERROR: Could not connect to MongoDB in production.');
+      process.exit(1);
+    }
+    
+    console.warn('[Database] Could not connect to MongoDB. Starting MongoMemoryServer fallback for local development...');
     try {
       const mongod = await MongoMemoryServer.create();
       const uri = mongod.getUri();
