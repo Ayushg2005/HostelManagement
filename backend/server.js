@@ -81,10 +81,13 @@ app.use('/api/canteen', canteenRoutes);
 
 // Health Check Endpoint
 app.get('/api/health', (req, res) => {
+  const mongoose = require('mongoose');
   res.status(200).json({
     status: 'healthy',
     system: 'Hostel Management System API',
     timestamp: new Date().toISOString(),
+    dbHost: mongoose.connection.host,
+    dbName: mongoose.connection.name
   });
 });
 
