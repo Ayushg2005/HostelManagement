@@ -21,11 +21,16 @@ const seedData = require('./src/seed');
 
 // Connect Database
 connectDB().then(() => {
-  // Seed entire mock database after DB connection (important for MemoryServer)
-  setTimeout(async () => {
-    await seedData();
+  // Only seed mock database locally, do not wipe production DB
+  if (process.env.NODE_ENV !== 'production') {
+    setTimeout(async () => {
+      await seedData();
+      seedRooms(io);
+    }, 1500);
+  } else {
+    // Just initialize the socket service for rooms in prod
     seedRooms(io);
-  }, 1500);
+  }
 });
 
 const app = express();
